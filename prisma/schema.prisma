@@ -21,17 +21,20 @@ model User {
 }
 
 model Restaurant {
-  id   String @id @db.Uuid
-  name String
+  id      String   @id @db.Uuid
+  name    String
+  ratings Rating[]
 
   @@map("restauraunts")
 }
 
 model Rating {
-  id      String @id @db.Uuid
-  rating  Int
-  user_id String @db.Uuid
-  user    User   @relation(fields: [user_id], references: [id])
+  id            String     @id @db.Uuid
+  rating        Int
+  user_id       String     @db.Uuid
+  user          User       @relation(fields: [user_id], references: [id])
+  restaurant_id String     @db.Uuid
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
 
   @@map("ratings")
 }

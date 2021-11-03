@@ -1,13 +1,16 @@
 import 'reflect-metadata';
 import { User } from '@models/User';
+import { Rating } from '@models/Rating';
 import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   InputType,
   Mutation,
   Query,
   Resolver,
+  Root,
 } from 'type-graphql';
 import { Context } from 'context';
 import { randomUUID } from 'crypto';
@@ -29,6 +32,17 @@ class SignUpUserInput {
 
 @Resolver(User)
 export class UserResolver {
+  @FieldResolver()
+  async ratings(@Root() user: User, @Ctx() ctx: Context): Promise<Rating[]> {
+    return ctx.prisma.user
+      .findUnique({
+        where: {
+          id: user.id,
+        },
+      })
+      .ratings();
+  }
+
   @Query(() => [User])
   async allUsers(@Ctx() ctx: Context) {
     return ctx.prisma.user.findMany();
