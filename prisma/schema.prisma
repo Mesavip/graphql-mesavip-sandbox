@@ -8,13 +8,30 @@ datasource db {
 }
 
 model User {
-  id            String @id @default(dbgenerated("uuid_generate_v4()"))
+  id            String   @id @db.Uuid
   name          String
-  email         String @unique
-  cpf           String @unique
+  email         String   @unique
+  cpf           String   @unique
   password_hash String
-  created_at    String @default(dbgenerated("transaction_timestamp()"))
-  updated_at    String @default(dbgenerated("transaction_timestamp()"))
+  ratings       Rating[]
+  created_at    String   @default(dbgenerated("transaction_timestamp()"))
+  updated_at    String   @default(dbgenerated("transaction_timestamp()"))
 
   @@map("users")
+}
+
+model Restaurant {
+  id   String @id @db.Uuid
+  name String
+
+  @@map("restauraunts")
+}
+
+model Rating {
+  id      String @id @db.Uuid
+  rating  Int
+  user_id String @db.Uuid
+  user    User   @relation(fields: [user_id], references: [id])
+
+  @@map("ratings")
 }
