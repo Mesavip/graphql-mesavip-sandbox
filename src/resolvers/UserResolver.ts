@@ -30,6 +30,9 @@ class SignUpUserInput {
   password_hash: string;
 }
 
+@InputType()
+class UserFieldsCount extends SignUpUserInput {}
+
 @Resolver(User)
 export class UserResolver {
   @FieldResolver()
@@ -61,6 +64,17 @@ export class UserResolver {
         cpf: user.cpf,
         password_hash: user.password_hash,
       },
+    });
+  }
+
+  @Query(() => User)
+  async testingPrisma(
+    @Arg('count', { nullable: true }) count: UserFieldsCount,
+    @Ctx() ctx: Context
+  ) {
+    return ctx.prisma.user.aggregate({
+      _count: count,
+      //Stopped here
     });
   }
 }

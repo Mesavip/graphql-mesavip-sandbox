@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn src/index.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn src/index.ts",
+    "db": "yarn prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^3.3.0",
