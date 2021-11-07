@@ -11,9 +11,9 @@ export class Rating {
   @Field((type) => String)
   rating: number;
 
-  @Field((type) => User)
-  user?: User;
+  @Field((type) => User, { nullable: true })
+  user?: User | null;
 
-  @Field((type) => Restaurant)
-  restaurant?: Restaurant;
+  @Field((type) => Restaurant, { nullable: true })
+  restaurant?: Restaurant | null;
 }
