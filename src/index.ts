@@ -1,11 +1,19 @@
 import 'reflect-metadata';
-import { buildSchema } from 'type-graphql';
+import { buildSchema, registerEnumType } from 'type-graphql';
 import { ApolloServer } from 'apollo-server';
 import { context } from 'context';
-import { UserResolver } from '@resolvers/UserResolver';
+import { CountStatus, SortOrder, UserResolver } from '@resolvers/UserResolver';
 import { RatingResolver } from '@resolvers/RatingResolver';
 
 const app = async () => {
+  registerEnumType(SortOrder, {
+    name: 'SortOrder',
+  });
+
+  registerEnumType(CountStatus, {
+    name: 'CountStatus',
+  });
+
   const schema = await buildSchema({
     resolvers: [UserResolver, RatingResolver],
   });

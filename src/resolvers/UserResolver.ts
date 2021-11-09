@@ -31,7 +31,26 @@ class SignUpUserInput {
 }
 
 @InputType()
-class UserFieldsCount extends SignUpUserInput {}
+class UserFieldsCount {
+  @Field((type) => CountStatus)
+  cpf: CountStatus;
+}
+
+@InputType()
+class orderBy {
+  @Field((type) => SortOrder)
+  name: SortOrder;
+}
+
+export enum CountStatus {
+  true = 'true',
+  false = 'false',
+}
+
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
 
 @Resolver(User)
 export class UserResolver {
@@ -44,6 +63,21 @@ export class UserResolver {
         },
       })
       .ratings();
+  }
+
+  @Query(() => [User])
+  async testingPrisma(@Ctx() ctx: Context) {
+    const user = await ctx.prisma.user.findMany({
+      include: {
+        _count: {
+          select: {
+            ratings: true,
+          },
+        },
+      },
+    });
+
+    return user;
   }
 
   @Query(() => [User])
@@ -64,17 +98,6 @@ export class UserResolver {
         cpf: user.cpf,
         password_hash: user.password_hash,
       },
-    });
-  }
-
-  @Query(() => User)
-  async testingPrisma(
-    @Arg('count', { nullable: true }) count: UserFieldsCount,
-    @Ctx() ctx: Context
-  ) {
-    return ctx.prisma.user.aggregate({
-      _count: count,
-      //Stopped here
     });
   }
 }
