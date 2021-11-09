@@ -66,22 +66,51 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  async testingPrisma(@Ctx() ctx: Context) {
-    const user = await ctx.prisma.user.findMany({
-      include: {
-        _count: {
-          select: {
-            ratings: true,
+  async testingPrisma(
+    @Arg('count', { nullable: true }) count: boolean,
+    @Arg('testCount'): testCount:
+    ObjectType()
+    @Field()
+    ratings: string | undefined
+
+    @Field()
+    comments: string | undefined
+
+    // TEST IT ON THE RATINGS RESOLVER
+    ,
+    @Ctx() ctx: Context
+  ) {
+    const doit = count
+      ? {
+          _count: {
+            select: {
+              ratings: true,
+            },
           },
-        },
+        }
+      : null;
+
+    const user = await ctx.prisma.user.findMany({
+      where: {
+        email: 'daniel@gmail.com',
       },
+      include: doit,
+      // include: {
+      //   _count: {
+      //     select: {
+      //       ratings: true,
+      //     },
+      //   },
+      // },
     });
+
+    console.log(user);
 
     return user;
   }
 
   @Query(() => [User])
-  async allUsers(@Ctx() ctx: Context) {
+  async@Ctx() ctx: Context) {
     return ctx.prisma.user.findMany();
   }
 

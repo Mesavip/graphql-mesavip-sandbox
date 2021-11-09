@@ -1,13 +1,6 @@
-import { IsEmail } from 'class-validator';
 import 'reflect-metadata';
-import {
-  Field,
-  ID,
-  InputType,
-  Int,
-  ObjectType,
-  ObjectTypeOptions,
-} from 'type-graphql';
+import { IsEmail } from 'class-validator';
+import { Field, ID, ObjectType } from 'type-graphql';
 import { Rating } from './Rating';
 
 @ObjectType()
